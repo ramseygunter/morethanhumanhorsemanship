@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>More Than Human Horsemanship</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Pinyon+Script&family=Figtree:wght@400;500;600&display=swap">
+<style>
+:root { --comp: url("gallery-competition.webp"); --train: url("gallery-training.webp"); --titan: url("gallery-titan.webp"); }
+/* Layout: loose, staggered composition. Oversized headline over drifting mane lines, organic blob shapes, tilted gallery, curved section edges. */
+:root {
+  --gutter: clamp(22px, 5.5vw, 56px);
+  --bg: #F1F3EE;
+  --surface: #E2E9DF;
+  --fg: #1B2823;
+  --muted: #3F4E46;
+  --accent: #3E5A4A;
+  --accent-fg: #F1F3EE;
+  --sand: #9C7B4E;
+  --line: #B4BFB1;
+  --f-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --f-script: "Pinyon Script", "Brush Script MT", cursive;
+  --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101614; --surface: #19221E; --fg: #EEF3EC; --muted: #B7C4BC;
+    --accent: #A9CDB6; --accent-fg: #0E1411; --sand: #D1B07F; --line: #3A4A42; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101614; --surface: #19221E; --fg: #EEF3EC; --muted: #B7C4BC;
+  --accent: #A9CDB6; --accent-fg: #0E1411; --sand: #D1B07F; --line: #3A4A42; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { margin: 0; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 400 17px/1.7 var(--f-body); overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+img, video, svg { max-width: 100%; }
+h1, h2, h3, p, li { overflow-wrap: break-word; }
+.wrap { width: 100%; max-width: 1180px; margin: 0 auto; padding-left: max(var(--gutter), env(safe-area-inset-left, 0px)); padding-right: max(var(--gutter), env(safe-area-inset-right, 0px)); position: relative; }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 300; margin: 0; text-wrap: balance; }
+p { margin: 0; max-width: 60ch; }
+a { color: inherit; }
+em { font-style: italic; }
+.label { font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+.script { font-family: var(--f-script); color: var(--sand); font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* nav */
+nav { display: flex; justify-content: flex-start; align-items: center; gap: 16px; padding-block: 22px; flex-wrap: wrap; position: relative; z-index: 2; }
+.brand { margin-right: auto; font-family: var(--f-display); font-size: 1.3rem; text-decoration: none; }
+nav ul { display: flex; align-items: center; gap: 26px; list-style: none; margin: 0; padding: 0; font-size: .92rem; }
+nav a { text-decoration: none; color: var(--muted); }
+nav a:hover { color: var(--fg); }
+.theme { background: transparent; color: var(--fg); border: 1px solid var(--line); border-radius: 50%; width: 38px; height: 38px; padding: 0; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.theme svg { display: block; }
+
+
+.nav-end { display: flex; align-items: center; gap: 10px; margin-left: 10px; }
+.nav-end .theme svg { width: 24px; height: 24px; }
+.nav-end .theme, .nav-end .menu-btn { width: 44px; height: 44px; box-sizing: border-box; flex: none; border-radius: 50%; }
+/* hamburger menu */
+.menu-btn { display: none; flex: none; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; background: transparent; cursor: pointer; padding: 0; position: relative; color: var(--fg); }
+.menu-btn span { position: absolute; left: 12px; right: 12px; height: 2px; background: currentColor; border-radius: 2px; transition: transform .3s ease, opacity .2s ease, top .3s ease; }
+.menu-btn span:nth-child(1) { top: 15px; } .menu-btn span:nth-child(2) { top: 21px; } .menu-btn span:nth-child(3) { top: 27px; }
+.menu-btn[aria-expanded="true"] span:nth-child(1) { top: 21px; transform: rotate(45deg); }
+.menu-btn[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.menu-btn[aria-expanded="true"] span:nth-child(3) { top: 21px; transform: rotate(-45deg); }
+/* compact nav (set by script whenever the links no longer fit on one line) */
+nav.compact { flex-wrap: nowrap; }
+nav.compact .brand { min-width: 0; }
+nav.compact .menu-btn { display: block; }
+nav.compact ul { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; padding: 8px 20px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 14px 30px rgba(0,0,0,.14); font-size: 1.05rem; z-index: 5; }
+nav.compact ul.open { display: flex; }
+nav.compact ul li { border-bottom: 1px solid var(--line); }
+nav.compact ul li:last-child { border-bottom: 0; }
+nav.compact ul li a { display: block; padding: 14px 0; color: var(--fg); }
+
+/* hero */
+.hero { position: relative; overflow: hidden; padding-bottom: clamp(60px, 10vw, 140px); }
+.mane { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.mane path { fill: none; stroke-linecap: round; }
+.mane { -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 78%); mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 78%); }
+.copy-box { background: color-mix(in srgb, var(--bg) 88%, transparent); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); padding: 18px 16px; margin-left: -16px; margin-right: -16px; border-radius: 26px; }
+.hero-inner { position: relative; z-index: 1; padding-top: clamp(30px, 7vw, 90px); display: grid; gap: 30px; }
+h1 { font-size: clamp(3.1rem, 11.5vw, 9.4rem); line-height: .94; letter-spacing: -0.03em; font-weight: 300; }
+h1 span { display: block; }
+h1 .l2 { margin-left: clamp(24px, 12vw, 190px); font-style: normal; font-weight: 300; color: var(--accent); }
+h1 .l3 { margin-left: clamp(0px, 4vw, 60px); }
+.side-note.ribbon { --w: clamp(240px, 28vw, 330px); position: relative; width: var(--w); max-width: none; aspect-ratio: 300 / 390; margin-top: calc(var(--w) * -.55); font-size: calc(var(--w) * .068); line-height: 1.2; color: #3A2A0A; filter: drop-shadow(0 8px 14px rgba(60, 42, 8, .28)); transition: transform .35s cubic-bezier(.3,1.4,.5,1); }
+a.side-note.ribbon { display: block; text-decoration: none; cursor: pointer; }
+.side-note.ribbon:focus-visible { outline: 3px solid var(--accent); outline-offset: 6px; }
+.side-note.ribbon:hover { transform: rotate(-1deg) scale(1.03); }
+.side-note.ribbon svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.side-note.ribbon p { position: absolute; left: 50%; top: 38.5%; width: 58%; margin: 0; transform: translate(-50%, -50%); font-family: var(--f-display); font-style: normal; font-weight: 400; text-align: center; text-wrap: balance; }
+.hero-foot { display: grid; grid-template-columns: 1fr minmax(0, 440px); gap: 40px; align-items: end; margin-top: 10px; }
+.hero-foot > * { min-width: 0; }
+.lede { font-size: 1.15rem; color: var(--muted); }
+.cta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin-top: 22px; }
+.btn { display: inline-block; background: var(--accent); color: var(--accent-fg); text-decoration: none; padding: 15px 30px; border-radius: 40px; font-weight: 500; font-size: .95rem; border: 1px solid var(--accent); cursor: pointer; font-family: inherit; }
+.btn:hover { opacity: .9; }
+.btn.ghost { background: transparent; color: var(--fg); border-color: var(--fg); }
+.side-note { transform: rotate(-4deg); justify-self: end; text-align: center; max-width: 14em; line-height: 1.2; font-size: clamp(2.2rem, 4.8vw, 3.3rem); color: color-mix(in srgb, var(--sand) 76%, var(--fg)); letter-spacing: .01em; }
+
+/* curved edge between bands */
+.edge { display: block; width: 100%; height: clamp(40px, 7vw, 100px); }
+
+section { padding-block: clamp(56px, 9vw, 110px); position: relative; }
+.band { background: var(--surface); }
+
+
+/* full-bleed photo bands */
+.fullbleed { margin: 0; position: relative; width: 100%; height: clamp(260px, 44vw, 600px); overflow: hidden; background: var(--surface); }
+.fullbleed svg, .fullbleed img, .fullbleed video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.fullbleed .wv { position: absolute; left: 0; width: 100%; height: clamp(40px, 7vw, 100px); inset: auto; pointer-events: none; }
+.fullbleed .wv.top { top: -1px; } .fullbleed .wv.bot { bottom: -1px; }
+.fullbleed figcaption { position: absolute; left: 50%; bottom: clamp(50px, 9vw, 120px); transform: translateX(-50%); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); background: color-mix(in srgb, var(--bg) 80%, transparent); padding: 6px 14px; border-radius: 999px; white-space: nowrap; }
+
+/* approach */
+.approach-head { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(24px, 6vw, 80px); align-items: center; }
+.approach-head > * { min-width: 0; }
+h2 { font-size: clamp(2.2rem, 5.6vw, 4.2rem); line-height: 1; letter-spacing: -0.02em; }
+h2 em { color: var(--accent); }
+.section-title { margin: 0 0 clamp(64px, 10vw, 128px); font-size: clamp(1.8rem, 3.6vw, 2.6rem); font-weight: 300; text-align: center; }
+.teach-label { margin: calc(clamp(40px, 6vw, 72px) + clamp(24px, 3.5vw, 40px) + 14px) 0 0; width: 100%; max-width: none; justify-self: stretch; text-align: center; font-size: .8rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.teach-label + .principles { margin-top: 18px; }
+.principles { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 56px; align-items: start; }
+.principle { padding: 36px 30px 40px; background: var(--surface); display: grid; gap: 10px; min-width: 0; }
+.principle h3 { font-size: clamp(1.4rem, 2.6vw, 1.9rem); font-style: italic; }
+.principle { align-content: start; gap: 0; }
+.phead { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.principle .toggle { flex: none; width: 58px; height: 58px; border-radius: 50%; border: 1px solid var(--line); background: transparent; color: var(--accent); display: grid; place-items: center; cursor: pointer; padding: 0; }
+.principle .toggle svg { transition: transform .35s cubic-bezier(.3,1.4,.5,1); transform: rotate(var(--r, 0deg)); }
+.principle .toggle:hover svg, .principle .toggle:focus-visible svg { transform: rotate(-22deg); }
+.principle .toggle[aria-expanded="true"] { --r: 22deg; }
+.principle .toggle[aria-expanded="true"]:hover svg, .principle .toggle[aria-expanded="true"]:focus-visible svg { transform: rotate(30deg); }
+.principle .toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.more { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s ease, margin-top .45s ease; }
+.more > div { overflow: hidden; min-height: 0; }
+.principle.open .more { grid-template-rows: 1fr; margin-top: 14px; }
+.principle { border-radius: 28px; padding: 26px clamp(22px, 4vw, 44px); }
+
+.principle p { color: var(--muted); font-size: .98rem; }
+
+/* quote */
+.quote { text-align: left; }
+.quote .wrap { display: grid; grid-template-columns: auto 1fr; gap: clamp(12px, 3vw, 40px); align-items: start; }
+.quote .mark { font-family: var(--f-script); font-size: clamp(6rem, 16vw, 12rem); line-height: .7; color: var(--sand); }
+blockquote { margin: 0; font-family: var(--f-display); font-weight: 300; font-style: italic; font-size: clamp(1.8rem, 4.6vw, 3.4rem); line-height: 1.15; letter-spacing: -0.015em; max-width: 24ch; text-wrap: balance; min-width: 0; }
+cite { display: block; margin-top: 22px; font-style: normal; font-size: .82rem; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
+
+/* about */
+.about { display: grid; grid-template-columns: 4fr 6fr; gap: clamp(28px, 7vw, 100px); align-items: center; }
+.about > * { min-width: 0; }
+.about .copy { display: grid; gap: 18px; }
+.about .vert { writing-mode: vertical-rl; transform: rotate(180deg); }
+.about .left { display: flex; gap: 22px; align-items: center; }
+
+/* gallery */
+.gallery { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; margin-top: 52px; }
+.tile { position: relative; min-height: 220px; display: flex; align-items: flex-end; padding: 14px; font-size: .8rem; transition: transform .35s ease; }
+.tile span { background: color-mix(in srgb, var(--bg) 80%, transparent); padding: 4px 10px; border-radius: 20px; }
+.t1 { grid-column: span 3; min-height: 380px; background: linear-gradient(160deg, #9DB09F, #5F7F6B); border-radius: 46% 54% 40% 60% / 38% 42% 58% 62%; transform: rotate(-2deg); }
+.t2 { grid-column: span 3; background: linear-gradient(200deg, #D5DDD2, #A9885A); border-radius: 60% 40% 54% 46% / 50% 56% 44% 50%; transform: rotate(2.5deg) translateY(30px); }
+.t3 { grid-column: span 2; background: linear-gradient(120deg, #BFCBBC, #7E9884); border-radius: 50% 50% 36% 64% / 54% 40% 60% 46%; transform: rotate(3deg); }
+.t4 { grid-column: span 2; background: linear-gradient(180deg, #E3D6BD, #A9885A); border-radius: 38% 62% 52% 48% / 44% 58% 42% 56%; transform: rotate(-3deg) translateY(-14px); }
+.t5 { grid-column: span 2; background: linear-gradient(240deg, #8FA896, #43604F); border-radius: 56% 44% 48% 52% / 40% 50% 50% 60%; transform: rotate(1.5deg) translateY(10px); }
+.tile.photo { background-image: var(--titan); background-size: cover; background-position: 50% 28%; background-color: var(--surface); }
+.tile.photo-comp { background-image: var(--comp); background-position: 50% 62%; }
+.tile.photo-train { background-image: var(--train); background-position: 50% 22%; }
+.tile.photo span { display: none; }
+.tile:hover { transform: rotate(0) scale(1.03); }
+.note { margin-top: 44px; font-size: .85rem; color: var(--muted); }
+
+/* contact */
+.contact-grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(28px, 6vw, 80px); align-items: start; }
+.contact-grid > * { min-width: 0; }
+.details { display: grid; gap: 18px; align-content: start; }
+.details p { color: var(--muted); }
+.details strong { color: var(--fg); font-weight: 500; display: block; }
+.panel { background: var(--bg); padding: clamp(24px, 4vw, 48px); border-radius: 34px 90px 34px 90px; border: 1px solid var(--line); }
+form { display: grid; gap: 20px; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.field { display: grid; gap: 7px; min-width: 0; }
+.field.full { grid-column: 1 / -1; }
+label { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+input, select, textarea { font: inherit; font-size: 1rem; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; width: 100%; }
+textarea { min-height: 130px; resize: vertical; }
+.sent { display: none; padding: 16px 20px; border: 1px solid var(--accent); border-radius: 14px; }
+.sent.on { display: block; }
+footer { padding-block: 40px; font-size: .85rem; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+/* gallery ticker */
+.ticker { overflow: hidden; margin-top: 52px; padding-block: 36px; -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent); }
+.ticker-track { display: flex; width: max-content; }
+.ticker-set { display: flex; gap: 24px; padding-right: 24px; }
+.ticker .tile { flex: none; width: clamp(240px, 30vw, 380px); height: clamp(200px, 24vw, 300px); min-height: 0; }
+.ticker .tile, .ticker .tile:hover { border-radius: 0; transform: none; }
+.ticker-set { gap: 4px; padding-right: 4px; }
+.ticker { padding-block: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .ticker-track { animation: tick 45s linear infinite; }
+  .ticker:hover .ticker-track { animation-play-state: paused; }
+  @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker { overflow-x: auto; }
+  .ticker-set[aria-hidden="true"] { display: none; }
+}
+@media (max-width: 820px) {
+  .hero-foot, .approach-head, .about, .contact-grid { grid-template-columns: 1fr; }
+  .side-note { justify-self: start; }
+  .side-note.ribbon { margin-top: 28px; justify-self: center; }
+  .principles { grid-template-columns: 1fr; margin-top: 40px; }
+  .about .vert { writing-mode: horizontal-tb; transform: none; }
+  .gallery { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .t1, .t2 { grid-column: span 2; min-height: 240px; }
+  .t3, .t4, .t5 { grid-column: span 1; min-height: 170px; }
+  .t5 { grid-column: span 2; }
+  .fields { grid-template-columns: 1fr; }
+  nav ul { gap: 16px; }
+}
+
+/* tablet */
+@media (min-width: 821px) and (max-width: 1024px) {
+  .hero-foot { grid-template-columns: 1fr minmax(0, 340px); gap: 28px; }
+  .principle { padding: 22px clamp(20px, 3.5vw, 36px); }
+}
+/* phones */
+@media (max-width: 600px) {
+  body { font-size: 16px; line-height: 1.65; }
+  nav { padding-block: 16px; gap: 10px 14px; }
+  nav ul { gap: 14px; font-size: .88rem; flex-wrap: wrap; }
+  .brand { font-size: 1.15rem; }
+  h1 { font-size: clamp(2.6rem, 14vw, 3.6rem); }
+  h1 .l2 { margin-left: 8vw; }
+  h1 .l3 { margin-left: 0; }
+  .copy-box { padding: 16px 18px; margin-inline: -8px; border-radius: 22px; }
+  .lede { font-size: 1.05rem; }
+  .cta .btn { padding: 13px 24px; }
+  h2 { font-size: clamp(1.9rem, 9vw, 2.4rem); }
+  section { padding-block: 48px; }
+  .fullbleed { height: clamp(220px, 62vw, 340px); }
+  .principle { border-radius: 22px; padding: 18px 20px; }
+  .principle .toggle { width: 48px; height: 48px; }
+  .panel { padding: 22px 20px; border-radius: 26px 56px 26px 56px; }
+  .btn { width: 100%; text-align: center; }
+  .cta .btn { width: auto; }
+  .ticker .tile { width: 72vw; height: 54vw; }
+  footer { padding-block: 28px; }
+}
+@media (max-width: 820px) {
+  #contact { padding-top: clamp(40px, 9vw, 64px) !important; }
+}
+@media (max-width: 360px) {
+  :root { --gutter: 18px; }
+  h1 { font-size: 2.4rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+  .mane path { stroke-dasharray: 2400; animation: draw 5s ease-out both; }
+  .mane path:nth-child(2) { animation-delay: .3s; }
+  .mane path:nth-child(3) { animation-delay: .6s; }
+  .mane path:nth-child(4) { animation-delay: .9s; }
+  .mane path:nth-child(5) { animation-delay: 1.2s; }
+  @keyframes draw { from { stroke-dashoffset: 2400; } to { stroke-dashoffset: 0; } }
+}
+</style>
+</head>
+<body>
+
+<div class="hero" id="top">
+  <svg class="mane" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true" role="presentation">
+    <path d="M-20 520C180 380 320 640 560 520S860 220 1220 330" stroke="var(--sand)" stroke-width="1.6" opacity=".65"/>
+    <path d="M-20 560C200 430 340 680 580 570S880 280 1220 390" stroke="var(--accent)" stroke-width="1.2" opacity=".4"/>
+    <path d="M-20 600C220 480 370 710 600 620S900 340 1220 450" stroke="var(--sand)" stroke-width="1" opacity=".5"/>
+    <path d="M-20 640C240 530 400 740 620 670S920 400 1220 510" stroke="var(--accent)" stroke-width="1.6" opacity=".3"/>
+    <path d="M-20 480C160 330 300 590 540 470S840 170 1220 270" stroke="var(--accent)" stroke-width="1" opacity=".35"/>
+  </svg>
+
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="#top">More Than Human Horsemanship</a>
+            <ul id="navlinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#approach">Our approach</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#contact">Request a clinic</a></li>
+      </ul>
+      <div class="nav-end"><button class="theme" id="theme" type="button" aria-label="Switch between light and dark mode" title="Switch between light and dark mode"></button><button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks"><span></span><span></span><span></span></button></div>
+    </nav>
+
+    <div class="hero-inner">
+      <h1><span class="l1">What is</span><span class="l2">your horse</span><span class="l3">thinking?</span></h1>
+      <div class="hero-foot">
+        <div class="copy-box">
+          <p class="lede">There are thousands of opinions in the horse world. We&rsquo;re not here to teach you which opinion is best. We&rsquo;re here to teach you how to think like a horse.</p>
+          <div class="cta">
+            <a class="btn" href="#contact">Request a clinic</a>
+            <a class="btn ghost" href="#approach">Read our approach</a>
+          </div>
+        </div>
+        <a class="side-note ribbon" href="#approach" aria-label="Become a better rider by thinking like a horse. Read our approach"><svg viewBox="0 0 300 390" aria-hidden="true" focusable="false"><defs><linearGradient id="gd1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F3D98A"/><stop offset=".5" stop-color="#D9AE4A"/><stop offset="1" stop-color="#B98A2C"/></linearGradient><linearGradient id="gd2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9C766"/><stop offset="1" stop-color="#B8862A"/></linearGradient><radialGradient id="gd3" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#FBEBB5"/><stop offset="1" stop-color="#E2BC5C"/></radialGradient></defs><g transform="rotate(13 150 160)"><path d="M112 190H168V372L140 352L112 372Z" fill="url(#gd2)" stroke="#9A6F1D" stroke-width="2" stroke-linejoin="round"/><path d="M124 190V358M156 190V358" stroke="#F6E2A0" stroke-width="2" opacity=".6"/></g><g transform="rotate(-13 150 160)"><path d="M132 190H188V372L160 352L132 372Z" fill="url(#gd2)" stroke="#9A6F1D" stroke-width="2" stroke-linejoin="round"/><path d="M144 190V358M176 190V358" stroke="#F6E2A0" stroke-width="2" opacity=".6"/></g><path d="M150.0 22.0 A18.2 18.2 0 0 1 180.6 25.7 A18.2 18.2 0 0 1 209.5 36.7 A18.2 18.2 0 0 1 234.9 54.2 A18.2 18.2 0 0 1 255.3 77.3 A18.2 18.2 0 0 1 269.7 104.6 A18.2 18.2 0 0 1 277.1 134.6 A18.2 18.2 0 0 1 277.1 165.4 A18.2 18.2 0 0 1 269.7 195.4 A18.2 18.2 0 0 1 255.3 222.7 A18.2 18.2 0 0 1 234.9 245.8 A18.2 18.2 0 0 1 209.5 263.3 A18.2 18.2 0 0 1 180.6 274.3 A18.2 18.2 0 0 1 150.0 278.0 A18.2 18.2 0 0 1 119.4 274.3 A18.2 18.2 0 0 1 90.5 263.3 A18.2 18.2 0 0 1 65.1 245.8 A18.2 18.2 0 0 1 44.7 222.7 A18.2 18.2 0 0 1 30.3 195.4 A18.2 18.2 0 0 1 22.9 165.4 A18.2 18.2 0 0 1 22.9 134.6 A18.2 18.2 0 0 1 30.3 104.6 A18.2 18.2 0 0 1 44.7 77.3 A18.2 18.2 0 0 1 65.1 54.2 A18.2 18.2 0 0 1 90.5 36.7 A18.2 18.2 0 0 1 119.4 25.7 A18.2 18.2 0 0 1 150.0 22.0 Z" fill="url(#gd1)" stroke="#9A6F1D" stroke-width="2"/><circle cx="150" cy="150" r="108" fill="none" stroke="#9A6F1D" stroke-width="1.5" opacity=".7"/><circle cx="150" cy="150" r="98" fill="url(#gd3)" stroke="#9A6F1D" stroke-width="2"/><circle cx="150" cy="150" r="90" fill="none" stroke="#B98A2C" stroke-width="1" stroke-dasharray="2 4" opacity=".8"/></svg><p>Become a better rider by thinking like a horse</p></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<figure class="fullbleed">
+  <img src="riders-meadow.webp" alt="Two riders on horseback crossing a mountain meadow" style="object-position:50% 70%" loading="lazy">
+  <video class="bgvideo" autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1" style="object-position:50% 35%"><source src="roundpen.mp4" type="video/mp4"></video>
+  <svg class="wv top" viewBox="0 0 1200 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0H1200V48C1030 92 840 14 620 54S260 92 0 44Z" fill="var(--bg)"/></svg>
+  <svg class="wv bot" viewBox="0 0 1200 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100V52C210 10 450 88 660 48S1040 12 1200 56V100Z" fill="var(--surface)"/></svg>
+</figure>
+
+<section class="band" id="about" style="padding-block:clamp(36px,5vw,64px)">
+  <div class="wrap about">
+    <div class="left">
+      <h2>25 years of <em>listening</em> to horses.</h2>
+    </div>
+    <div class="copy">
+      <p>The idea for More Than Human Horsemanship started decades before it was ever established. On a rural farm in Virginia, Ramsey started riding horses before she could walk. She learned natural horsemanship from her mother, and helped train horses under her mother&rsquo;s guidance from a young age.</p>
+      <p>The approach was simple: no competitions, just you and your horse.</p>
+      <p>As Ramsey got older, she began traveling and riding around the world, and even entered her first competition as a mounted archer. She noticed that across countries, cultures, and disciplines, there were many great riders, but too often they rode asking <em>what do I want my horse to do?</em> &mdash; instead of asking <em>what is my horse thinking?</em></p>
+      <p>Ramsey set out to change that, founding More Than Human Horsemanship with the goal of sharing what her mother and her childhood horses taught her: how to view the world through the eyes of a horse.</p>
+    </div>
+  </div>
+</section>
+<figure class="fullbleed">
+  <img src="natural-horsemanship.webp" alt="A young woman leading an Appaloosa horse at liberty in a sunlit round pen" style="object-position:50% 12%" loading="lazy">
+  <video class="bgvideo" autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1" style="object-position:50% 58%"><source src="riding-competition.mp4" type="video/mp4"></video>
+  <svg class="wv top" viewBox="0 0 1200 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0H1200V52C960 12 780 90 560 50S200 80 0 48Z" fill="var(--surface)"/></svg>
+  <svg class="wv bot" viewBox="0 0 1200 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100V46C180 86 420 14 640 52S1020 90 1200 50V100Z" fill="var(--bg)"/></svg>
+</figure>
+
+<section id="approach">
+  <div class="wrap">
+    <div class="approach-head">
+      <h2>To master horsemanship is to master <em>oneself</em>.</h2>
+      <p>Recognizing and analyzing our own thinking, patterns, and biases is a skill that every horseman and horsewoman must dedicate themselves to developing throughout their lifetime.<br><br>Our horsemanship is, after all, a reflection of our own awareness and a willingness to step outside of our experiences as humans to be better listeners and partners to our horses.</p>
+    </div>
+    <p class="teach-label">What we teach</p>
+    <div class="principles">
+      <div class="principle">
+      <div class="phead">
+        <h3>Horse language and psychology</h3>
+        <button class="toggle" type="button" aria-expanded="false" aria-label="Expand: Horse language and psychology"><svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"><defs><mask id="hs1" maskUnits="userSpaceOnUse" x="0" y="0" width="40" height="40"><rect width="40" height="40" fill="#fff"/><circle cx="5.1" cy="13.4" r="1.7" fill="#000"/><circle cx="4.4" cy="22.1" r="1.7" fill="#000"/><circle cx="7.0" cy="29.8" r="1.7" fill="#000"/><circle cx="33.0" cy="29.8" r="1.7" fill="#000"/><circle cx="35.6" cy="22.1" r="1.7" fill="#000"/><circle cx="34.9" cy="13.4" r="1.7" fill="#000"/></mask></defs><path d="M10 5C3.5 14 3.5 28 11.5 33.5C16 36.5 24 36.5 28.5 33.5C36.5 28 36.5 14 30 5" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="butt" mask="url(#hs1)"/></svg></button>
+      </div>
+      <div class="more"><div><p>Horses may not speak in words, but they do speak with body language and movement &mdash; a language we call Equus.</p><p style="margin-top:1em">Equus evolved across millions of years, helping horses survive into the modern day as their ancestors spread from the plains of North America, across the Bering Strait, and into the endless Eurasian Steppe. For these prey animals, silent, subtle communication and keen senses were key to the survival of the herd and the individual horse.</p><p style="margin-top:1em">As we learn Equus and horse psychology, we develop the skill some call &ldquo;horse whispering.&rdquo; But this isn&rsquo;t the mystical practice you might think it is. It&rsquo;s seeing the world through the eyes of a horse and asking yourself: How can I speak Equus too?</p></div></div>
+      </div>
+      <div class="principle">
+      <div class="phead">
+        <h3>Human perspective and communication</h3>
+        <button class="toggle" type="button" aria-expanded="false" aria-label="Expand: Human perspective and communication"><svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"><defs><mask id="hs2" maskUnits="userSpaceOnUse" x="0" y="0" width="40" height="40"><rect width="40" height="40" fill="#fff"/><circle cx="5.1" cy="13.4" r="1.7" fill="#000"/><circle cx="4.4" cy="22.1" r="1.7" fill="#000"/><circle cx="7.0" cy="29.8" r="1.7" fill="#000"/><circle cx="33.0" cy="29.8" r="1.7" fill="#000"/><circle cx="35.6" cy="22.1" r="1.7" fill="#000"/><circle cx="34.9" cy="13.4" r="1.7" fill="#000"/></mask></defs><path d="M10 5C3.5 14 3.5 28 11.5 33.5C16 36.5 24 36.5 28.5 33.5C36.5 28 36.5 14 30 5" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="butt" mask="url(#hs2)"/></svg></button>
+      </div>
+      <div class="more"><div><p>You already know what you want to do &mdash; that&rsquo;s easy. But how do we get the horse to <em>willingly</em> do it for you?</p><p style="margin-top:1em">Humans and horses have worked together for thousands of years. By studying how horsemanship has varied across time and cultures, we can see how humans have both helped and harmed horses. This shared history with horses leads to a question: How do we communicate? And where have our biases as humans made us accidentally communicate poorly with our horses?</p><p style="margin-top:1em">As we look closely at human-horse communication, we see a mirror of ourselves &mdash; for better and worse. But we can use that reflection to grow, to change how we interact with our horses, and to speak to them in a way they can more easily understand.</p></div></div>
+      </div>
+      <div class="principle">
+      <div class="phead">
+        <h3>Developing a safe and reciprocal partnership</h3>
+        <button class="toggle" type="button" aria-expanded="false" aria-label="Expand: Developing a safe and reciprocal partnership"><svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"><defs><mask id="hs3" maskUnits="userSpaceOnUse" x="0" y="0" width="40" height="40"><rect width="40" height="40" fill="#fff"/><circle cx="5.1" cy="13.4" r="1.7" fill="#000"/><circle cx="4.4" cy="22.1" r="1.7" fill="#000"/><circle cx="7.0" cy="29.8" r="1.7" fill="#000"/><circle cx="33.0" cy="29.8" r="1.7" fill="#000"/><circle cx="35.6" cy="22.1" r="1.7" fill="#000"/><circle cx="34.9" cy="13.4" r="1.7" fill="#000"/></mask></defs><path d="M10 5C3.5 14 3.5 28 11.5 33.5C16 36.5 24 36.5 28.5 33.5C36.5 28 36.5 14 30 5" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="butt" mask="url(#hs3)"/></svg></button>
+      </div>
+      <div class="more"><div><p>We cannot change the past, but we can create a safe and calm environment for horses to learn and grow alongside us.</p><p style="margin-top:1em">One honest conversation at a time, trust can grow &mdash; and so can our relationships with our horses. If we dedicate ourselves to self-reflection and give our horses space to communicate, we can foster a partnership where reciprocal respect grows into horse and human both choosing each other, without force.</p><p style="margin-top:1em">We leave the barn door wide open for growth, improved communication, and a willing partner when we center the question: <em>What is my horse thinking?</em></p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery" style="padding-top:0">
+  <div class="wrap">
+    </div>
+    <div class="ticker" role="region" aria-label="Photo gallery">
+      <div class="ticker-track">
+        <div class="ticker-set">
+          <div class="tile t2 photo" role="img" aria-label="Ramsey drawing a bow on horseback, in silhouette"><span>Mounted archery</span></div>
+          <div class="tile t3 photo photo-comp" role="img" aria-label="Ramsey competing in mounted archery on a white horse"><span>Competition</span></div>
+          <div class="tile t4 photo photo-train" role="img" aria-label="Ramsey drawing a bow on horseback during training"><span>Training</span></div>
+          <div class="tile t1"><span>Photo placeholder · Round pen, morning</span></div>
+          <div class="tile t2"><span>Photo placeholder · Lead rope work</span></div>
+          <div class="tile t3"><span>Photo placeholder · Trail loop</span></div>
+          <div class="tile t4"><span>Photo placeholder · Saturday clinic</span></div>
+          <div class="tile t5"><span>Photo placeholder · Liberty work</span></div>
+        </div>
+        <div class="ticker-set" aria-hidden="true">
+          <div class="tile t2 photo"><span>Mounted archery</span></div>
+          <div class="tile t3 photo photo-comp"><span>Competition</span></div>
+          <div class="tile t4 photo photo-train"><span>Training</span></div>
+          <div class="tile t1"><span>Photo placeholder · Round pen, morning</span></div>
+          <div class="tile t2"><span>Photo placeholder · Lead rope work</span></div>
+          <div class="tile t3"><span>Photo placeholder · Trail loop</span></div>
+          <div class="tile t4"><span>Photo placeholder · Saturday clinic</span></div>
+          <div class="tile t5"><span>Photo placeholder · Liberty work</span></div>
+        </div>
+      </div>
+    </div>
+</section>
+
+<svg class="edge" viewBox="0 0 1200 100" preserveAspectRatio="none" aria-hidden="true" role="presentation" style="background:var(--bg)">
+  <path d="M0 100V50C180 90 340 10 540 45S860 95 1040 40S1160 20 1200 50V100Z" fill="var(--surface)"/>
+</svg>
+<section class="band" id="contact" style="padding-top:0">
+  <div class="wrap contact-grid">
+    <div class="details">
+      <h2 style="font-size:clamp(2rem,4.2vw,3.2rem)">Become a better rider by <em>thinking like a horse</em></h2>
+      <p><strong>Virginia, United States</strong>We travel nationally and internationally</p>
+      <p><strong>hello@morethanhuman.example</strong>We will respond as soon as possible</p>
+    </div>
+    <div class="panel">
+      <form id="inquiry" novalidate>
+        <div class="fields">
+          <div class="field"><label for="name">Name</label><input id="name" name="name" autocomplete="name" required></div>
+          <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="type">Interested in</label>
+            <select id="type" name="type">
+              <option>Group clinic</option>
+              <option>Individual session</option>
+              <option>More information</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field"><label for="level">Experience</label>
+            <select id="level" name="level">
+              <option>New to horses</option>
+              <option>Some experience with horses</option>
+              <option>Experienced with horses</option>
+            </select>
+          </div>
+          <div class="field full"><label for="discipline">Preferred discipline</label><input id="discipline" name="discipline" type="text"></div>
+          <div class="field full"><label for="msg">Message</label><textarea id="msg" name="msg"></textarea></div>
+        </div>
+        <div><button class="btn" type="submit">Send</button></div>
+        <div class="sent" id="sent" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer>
+    <span>© More Than Human Horsemanship</span>
+  </footer>
+</div>
+
+<script>
+  var root = document.documentElement;
+  var tbtn = document.getElementById('theme');
+  var SUN = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>';
+  var MOON = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>';
+  function isDark() {
+    var t = root.getAttribute('data-theme');
+    return t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function setTheme(t) {
+    root.setAttribute('data-theme', t);
+    tbtn.innerHTML = t === 'dark' ? SUN : MOON;
+    try { localStorage.setItem('theme', t); } catch (e) {}
+  }
+  var saved = null;
+  try { saved = localStorage.getItem('theme'); } catch (e) {}
+  if (saved === 'light' || saved === 'dark') setTheme(saved); else tbtn.innerHTML = isDark() ? SUN : MOON;
+  tbtn.addEventListener('click', function () { setTheme(isDark() ? 'light' : 'dark'); });
+
+  var form = document.getElementById('inquiry');
+  var sent = document.getElementById('sent');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = document.getElementById('name');
+    var email = document.getElementById('email');
+    if (!name.value.trim() || !email.value.includes('@')) {
+      sent.textContent = 'Please add your name and a valid email so we can reply.';
+      sent.classList.add('on');
+      (name.value.trim() ? email : name).focus();
+      return;
+    }
+    sent.textContent = 'Preview only: this demo form does not send messages yet. Once connected, your inquiry for "' + document.getElementById('type').value.toLowerCase() + '" would go to the ranch.';
+    sent.classList.add('on');
+  });
+document.querySelectorAll('.principle .toggle').forEach(function(b){b.addEventListener('click',function(){var p=b.closest('.principle');var o=p.classList.toggle('open');b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',(o?'Collapse: ':'Expand: ')+p.querySelector('h3').textContent);});});
+(function(){document.querySelectorAll('.bgvideo').forEach(function(v){
+var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(rm){v.removeAttribute('autoplay');v.pause();v.style.display='none';return;}
+v.muted=true;v.defaultMuted=true;v.setAttribute('muted','');v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');
+function tryPlay(){var p=v.play();if(p&&p.catch)p.catch(function(){});}
+['touchstart','pointerdown','scroll','click'].forEach(function(ev){window.addEventListener(ev,function once(){window.removeEventListener(ev,once);var r=v.getBoundingClientRect();if(v.paused&&r.bottom>0&&r.top<innerHeight)tryPlay();},{passive:true});});
+v.addEventListener('loadeddata',function(){var r=v.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight)tryPlay();});
+if('IntersectionObserver' in window){new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var p=v.play();if(p&&p.catch)p.catch(function(){});}else{v.pause();}});},{threshold:.15}).observe(v);}
+var srcs=v.querySelectorAll('source');if(srcs.length){srcs[srcs.length-1].addEventListener('error',function(){v.style.display='none';});}
+});})();
+
+  (function(){var b=document.getElementById('menuBtn'),u=document.getElementById('navlinks');if(!b||!u)return;
+  function set(o){u.classList.toggle('open',o);b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Close menu':'Open menu');}
+  b.addEventListener('click',function(e){e.stopPropagation();set(!u.classList.contains('open'));});
+  u.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){set(false);});});
+  document.addEventListener('click',function(e){if(!u.contains(e.target)&&e.target!==b)set(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')set(false);});
+  window.addEventListener('resize',function(){});})();
+
+  (function(){var nav=document.querySelector('nav'),br=nav&&nav.querySelector('.brand'),ul=document.getElementById('navlinks'),mb=document.getElementById('menuBtn');if(!nav)return;
+  function fit(){nav.classList.remove('compact');var ne=nav.querySelector('.nav-end');var need=br.offsetWidth+ul.scrollWidth+ne.offsetWidth+60;if(need>nav.clientWidth||window.innerWidth<=820){nav.classList.add('compact');}else{ul.classList.remove('open');mb.setAttribute('aria-expanded','false');}}
+  fit();window.addEventListener('resize',fit);window.addEventListener('load',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);})();
+</script>
+</body>
+</html>
